@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CORS Test</title>
+</head>
+<body>
+    <h1>CORS Test</h1>
+    <button onclick="testCORS()">Test CORS</button>
+    <div id="result"></div>
+
+    <script>
+        async function testCORS() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Testing CORS...';
+            
+            try {
+                // Test model info endpoint
+                const modelResponse = await fetch('http://127.0.0.1:8002/model/info');
+                const modelData = await modelResponse.json();
+                
+                // Test analytics endpoint
+                const analyticsResponse = await fetch('http://127.0.0.1:8002/analytics/overview');
+                const analyticsData = await analyticsResponse.json();
+                
+                // Test analyze endpoint
+                const analyzeResponse = await fetch('http://127.0.0.1:8002/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        component_type: 'Semiconductor',
+                        seller_location: 'Taiwan',
+                        import_location: 'USA'
+                    })
+                });
+                const analyzeData = await analyzeResponse.json();
+                
+                resultDiv.innerHTML = `
+                    <h2>✅ CORS Test Successful!</h2>
+                    <h3>Model Info:</h3>
+                    <pre>${JSON.stringify(modelData, null, 2)}</pre>
+                    <h3>Analytics:</h3>
+                    <pre>${JSON.stringify(analyticsData, null, 2)}</pre>
+                    <h3>Analysis Result:</h3>
+                    <pre>${JSON.stringify(analyzeData, null, 2)}</pre>
+                `;
+                
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <h2>❌ CORS Test Failed</h2>
+                    <p>Error: ${error.message}</p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

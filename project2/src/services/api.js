@@ -1,5 +1,5 @@
 // API service for communicating with FastAPI backend
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = 'http://127.0.0.1:8007';
 
 class ApiService {
   constructor() {
@@ -30,17 +30,12 @@ class ApiService {
     }
   }
 
-  // Health check
-  async healthCheck() {
-    return this.request('/health');
-  }
-
   // Get model information
   async getModelInfo() {
     return this.request('/model/info');
   }
 
-  // Analyze supply chain risk
+  // Analyze supply chain risk - updated for new orchestrator format
   async analyzeSupplyChain(data) {
     return this.request('/analyze', {
       method: 'POST',

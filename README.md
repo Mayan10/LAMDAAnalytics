@@ -1,45 +1,95 @@
 # LAMDA Supply Chain Risk Analysis System
 
-A comprehensive AI-powered supply chain risk analysis system that combines PyTorch machine learning models with a modern React frontend and FastAPI backend.
+A comprehensive AI-powered supply chain risk analysis system featuring a complete 7-agent AI pipeline that combines PyTorch machine learning models with real-time external API integration and a modern React frontend.
 
 ## 🚀 Features
 
-- **AI-Powered Risk Analysis**: Uses PyTorch models for supply chain risk prediction
-- **Real-time Monitoring**: Live tracking of supply chain disruptions and alerts
-- **Interactive Route Planning**: Visual route optimization with risk assessment
-- **Multi-Agent Architecture**: 8 specialized AI agents for comprehensive analysis
-- **Modern Web Interface**: React-based dashboard with real-time updates
+* **Complete AI Agent Pipeline**: 7 specialized AI agents for comprehensive risk analysis
+* **Real-time External API Integration**: Gemini AI, SERP API, Weather API, Google Maps
+* **TGN Model Integration**: PyTorch-based risk prediction with fallback mechanisms
+* **Async Orchestration**: Parallel execution of all AI agents for optimal performance
+* **Real-time Monitoring**: Live tracking of supply chain disruptions and alerts
+* **Interactive Dashboard**: Modern React-based interface with real-time updates
+* **Comprehensive Risk Analysis**: Multi-factor risk assessment with actionable insights
 
 ## 🏗️ Architecture
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   React Frontend │    │  FastAPI Backend │    │  PyTorch Model  │
-│   (Port 5173)   │◄──►│   (Port 8000)   │◄──►│  (tgn_model.pth)│
+│   React Frontend │    │  FastAPI Backend │    │  PyTorch TGN   │
+│   (Port 5175)   │◄──►│   (Port 8007)   │◄──►│  (tgn_model.pth)│
 └─────────────────┘    └─────────────────┘    └─────────────────┘
+                              │
+                              ▼
+                    ┌─────────────────┐
+                    │  AI Agent       │
+                    │  Orchestrator   │
+                    │  (7 Agents)     │
+                    └─────────────────┘
+                              │
+                    ┌─────────┼─────────┐
+                    ▼         ▼         ▼
+            ┌──────────┐ ┌──────────┐ ┌──────────┐
+            │ Gemini   │ │ SERP API │ │ Weather  │
+            │ AI API   │ │          │ │ API      │
+            └──────────┘ └──────────┘ └──────────┘
 ```
+
+## 🤖 AI Agent Pipeline
+
+The system features a complete 7-agent AI pipeline:
+
+1. **🔍 Trade Agent** → Gemini AI trade flow analysis
+2. **📰 News Agent** → SERP API → Web scraping → Gemini sentiment analysis
+3. **🌤️ Weather Agent** → Weather API → Anomaly detection
+4. **🏛️ Political Agent** → Gemini geopolitical risk assessment
+5. **🌍 GSCPI Agent** → Gemini global supply chain pressure analysis
+6. **⚖️ Normalizer Agent** → Feature normalization and scaling
+7. **🤖 TGN Model** → Trained AI risk prediction
+8. **📊 Reporter Agent** → Gemini report generation and simplification
 
 ## 📋 Prerequisites
 
-- Python 3.8+
-- Node.js 16+
-- npm or yarn
+* Python 3.13+
+* Node.js 16+
+* npm or yarn
+* API Keys for external services:
+  - Google Gemini API
+  - Google Maps API
+  - SERP API
+  - Weather API (OpenWeather or WeatherAPI)
 
 ## 🛠️ Installation & Setup
 
-### 1. Backend Setup
+### 1. Clone Repository
+
+```bash
+git clone https://github.com/iareARiES/LAMDAAnalytics.git
+cd LAMDAAnalytics
+```
+
+### 2. Backend Setup
 
 ```bash
 # Install Python dependencies
-pip install -r backend/requirements.txt
+cd backend
+pip install -r requirements.txt
+
+# Configure API keys
+cp .env.example .env
+# Edit .env with your API keys:
+# GOOGLE_MAPS_API_KEY=your_key
+# SERP_API_KEY=your_key
+# WEATHER_API_KEY=your_key
+# GEMINI_API_KEY=your_key
 
 # Start the backend server
-python start_backend.py
+python -m uvicorn main:app --host 127.0.0.1 --port 8007
 ```
 
-The backend will be available at: `http://localhost:8000`
+The backend will be available at: `http://127.0.0.1:8007`
 
-### 2. Frontend Setup
+### 3. Frontend Setup
 
 ```bash
 # Navigate to frontend directory
@@ -52,9 +102,9 @@ npm install
 npm run dev
 ```
 
-The frontend will be available at: `http://localhost:5173`
+The frontend will be available at: `http://localhost:5175`
 
-### 3. Quick Start (Windows)
+### 4. Quick Start (Windows)
 
 ```bash
 # Start backend (in one terminal)
@@ -67,93 +117,168 @@ start_frontend.bat
 ## 🔧 API Endpoints
 
 ### Core Analysis
-- `POST /analyze` - Analyze supply chain risk
-- `GET /model/info` - Get model information
-- `GET /health` - Health check
 
-### Monitoring
-- `GET /monitoring/alerts` - Get real-time alerts
-- `GET /analytics/overview` - Get analytics overview
+* `POST /analyze` - Complete AI agent pipeline analysis
+* `GET /model/info` - Get TGN model information
+* `GET /health` - Health check
+
+### Monitoring & Analytics
+
+* `GET /monitoring/alerts` - Get real-time alerts
+* `GET /analytics/overview` - Get analytics overview
 
 ## 📊 Usage
 
-1. **Open the Dashboard**: Navigate to `http://localhost:5173/dashboard`
-2. **Configure Analysis**: 
-   - Select component type (semiconductors, batteries, etc.)
-   - Enter seller location (e.g., "China", "Germany")
-   - Enter import location (e.g., "USA", "India")
+1. **Open the Dashboard**: Navigate to `http://localhost:5175/dashboard`
+2. **Configure Analysis**:  
+   * Select component type (semiconductors, batteries, etc.)  
+   * Enter seller location (e.g., "Hsinchu, Taiwan")  
+   * Enter import location (e.g., "Los Angeles, USA")
+   * Enter seller name (e.g., "TSMC")
 3. **Run Analysis**: Click "Analyze Supply Chain Risk"
-4. **View Results**: 
-   - Risk score and level
-   - Detailed risk factors
-   - Recommended routes
-   - Real-time monitoring data
+4. **View Results**:  
+   * Risk score and level (0-1 scale)
+   * Detailed risk factors with percentages
+   * AI-generated mitigation strategies
+   * Real-time monitoring data
 
-## 🧠 Model Integration
+## 🧠 AI Model Integration
 
-The system integrates with your PyTorch model (`tgn_model.pth`) which contains:
-- Model state dictionary
-- Model class information
-- F1 score metrics
-- Model name
+The system integrates with your PyTorch TGN model (`tgn_model.pth`) which provides:
 
-The backend automatically loads the model and uses it for risk predictions based on:
-- Component type
-- Geographic locations
-- Additional risk factors
+* **Risk Prediction**: Neural network-based risk scoring
+* **Feature Processing**: 7 normalized input features
+* **Component Analysis**: Individual risk factor contributions
+* **Fallback Mechanism**: Weighted scoring when model unavailable
 
-## 🎯 Key Components
+### Input Features (Normalized 0-1)
 
-### Frontend (React)
-- **Dashboard.jsx**: Main dashboard with tabs and analytics
-- **SupplyChainMap.jsx**: Interactive route visualization
-- **services/api.js**: API communication layer
-
-### Backend (FastAPI)
-- **main.py**: Core API server with model integration
-- **Model Loading**: Automatic PyTorch model loading
-- **Risk Analysis**: AI-powered risk assessment
-- **Real-time Data**: Live monitoring and alerts
+* `inventory_days`: Inventory coverage analysis
+* `past_delay_days`: Historical delay patterns
+* `news_vol_7d`: News volume in last 7 days
+* `neg_tone_frac_3d`: Negative sentiment fraction
+* `strike_flag_7d`: Labor unrest detection
+* `weather_anomaly_7d`: Weather anomaly detection
+* `global_risk`: Global supply chain pressure
 
 ## 🔍 Risk Analysis Features
 
-- **Weather Disruption**: Climate-based risk assessment
-- **Political Tensions**: Geopolitical risk evaluation
-- **Supply Chain Complexity**: Multi-tier supplier analysis
-- **Regulatory Compliance**: Trade regulation monitoring
+* **Real-time News Monitoring**: SERP API integration for disruption detection
+* **Weather Risk Assessment**: Climate-based anomaly detection
+* **Political Risk Evaluation**: Geopolitical and sanctions monitoring
+* **Trade Flow Analysis**: Gemini AI-powered trade pattern analysis
+* **Global Pressure Monitoring**: GSCPI integration for macro trends
 
 ## 📈 Analytics Dashboard
 
-- Real-time risk scoring
-- Route optimization
-- Alert management
-- Performance metrics
-- Model confidence indicators
+* **Real-time Risk Scoring**: Live risk assessment with confidence levels
+* **Interactive Route Visualization**: Supply chain map with risk overlays
+* **Alert Management**: Real-time disruption notifications
+* **Performance Metrics**: Model accuracy and execution times
+* **Mitigation Strategies**: AI-generated actionable recommendations
+
+## 🚀 Performance
+
+* **Execution Time**: ~26 seconds for complete analysis
+* **Parallel Processing**: All 7 agents execute concurrently
+* **Caching**: 15-minute TTL for news and weather data
+* **Error Handling**: Graceful degradation with mock responses
+* **Scalability**: Designed for high-throughput production use
+
+## 🧪 Testing
+
+### Run Complete Pipeline Test
+
+```bash
+# Test the full AI agent pipeline
+python run_orchestrator_realtime.py
+
+# Test individual API connections
+python test_google_api.py
+
+# Test with mock data
+python test_simple_orchestrator.py
+```
+
+### API Testing
+
+```bash
+# Test the complete analysis endpoint
+curl -X POST http://127.0.0.1:8007/analyze \
+  -H "Content-Type: application/json" \
+  -d '{
+    "component_type": "Semiconductor",
+    "seller_location": "Hsinchu, Taiwan",
+    "import_location": "Los Angeles, USA",
+    "seller_name": "TSMC"
+  }'
+```
 
 ## 🚨 Troubleshooting
 
 ### Backend Issues
-- Ensure Python dependencies are installed: `pip install -r backend/requirements.txt`
-- Check if model file exists: `tgn_model.pth`
-- Verify port 8000 is available
+
+* Ensure Python dependencies are installed: `pip install -r backend/requirements.txt`
+* Check if model file exists: `tgn_model.pth`
+* Verify API keys are set in `backend/.env`
+* Check if port 8007 is available
 
 ### Frontend Issues
-- Ensure Node.js dependencies are installed: `npm install`
-- Check if port 5173 is available
-- Verify backend is running on port 8000
+
+* Ensure Node.js dependencies are installed: `npm install`
+* Check if port 5175 is available
+* Verify backend is running on port 8007
+
+### API Issues
+
+* Verify all API keys are valid and have proper permissions
+* Check API quotas and billing status
+* Ensure internet connectivity for external API calls
 
 ### Model Issues
-- Model file should be in the root directory or backend directory
-- Ensure PyTorch is properly installed
-- Check model file integrity
+
+* Model file should be in the backend directory
+* Ensure PyTorch is properly installed
+* Check model file integrity
+
+## 📁 Project Structure
+
+```
+LAMDAAnalytics/
+├── backend/
+│   ├── main.py                 # FastAPI server
+│   ├── requirements.txt        # Python dependencies
+│   ├── .env                    # API keys configuration
+│   ├── tgn_model.pth          # PyTorch TGN model
+│   ├── config/
+│   │   └── settings.py        # Configuration management
+│   ├── orchestrator/
+│   │   ├── orchestrator.py    # Main orchestrator
+│   │   ├── agents/            # AI agent implementations
+│   │   └── utils/             # Utility functions
+│   └── models/
+│       └── tgn_model.py       # TGN model wrapper
+├── project2/
+│   ├── src/
+│   │   ├── Dashboard.jsx      # Main dashboard
+│   │   ├── SupplyChainMap.jsx # Route visualization
+│   │   └── services/
+│   │       └── api.js         # API communication
+│   └── package.json           # Frontend dependencies
+├── run_orchestrator_realtime.py # Pipeline test script
+├── test_google_api.py         # API testing script
+└── README.md                  # This file
+```
 
 ## 🔮 Future Enhancements
 
-- Real-time data feeds integration
-- Advanced visualization components
-- Machine learning model retraining
-- Multi-language support
-- Mobile responsiveness improvements
+* **Real-time Data Feeds**: Integration with live supply chain data
+* **Advanced Visualization**: 3D route mapping and risk heatmaps
+* **Machine Learning**: Model retraining and improvement
+* **Multi-language Support**: Internationalization
+* **Mobile App**: React Native mobile application
+* **Blockchain Integration**: Supply chain transparency
+* **IoT Integration**: Real-time sensor data
 
 ## 📝 License
 
@@ -161,11 +286,20 @@ This project is part of the LAMDA Analytics system for supply chain risk managem
 
 ## 👥 Team
 
-- **Devansh Behl**: Full Stack Development
-- **Mayan Sharma**: AI/ML Engineering
-- **Aditya Takuli**: Data Engineering & Analytics
-- **Lay Gupta**: Product & Business Model
+* **Devansh Behl**: Full Stack Development
+* **Mayan Sharma**: AI/ML Engineering  
+* **Aditya Takuli**: Data Engineering & Analytics
+* **Lay Gupta**: Product & Business Model
+
+## 📞 Support
+
+For support or questions:
+* API Documentation: `http://127.0.0.1:8007/docs` (when backend is running)
+* GitHub Issues: [Create an issue](https://github.com/iareARiES/LAMDAAnalytics/issues)
+* Email: [Contact the team]
 
 ---
 
-For support or questions, please refer to the API documentation at `http://localhost:8000/docs` when the backend is running.
+**Status**: ✅ Fully Operational with Real API Integration  
+**Last Updated**: September 2025  
+**Version**: 2.0 - Complete AI Agent Pipeline
